@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tour Curation Sample</title>
+<link href="jquery-mobile/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css">
+<link href="css\index.css" rel="stylesheet" type="text/css">
+<script src="jquery-mobile/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.0.min.js" type="text/javascript"></script>
+<script src="cordova.js" type="text/javascript"></script>
+<script src="phonegap.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+
+var mymedia=null;
+	var mediaTimer = null;  
+	var flagPlay=false;
+	var soundfile=["tc0","tc1", "tc2", "tc3", "tc4", "tc5"];
+	var txtInfo=new Array(5);
+
+	<!-- -->
+	
+	txtInfo[0]="<b><font color='blue'>Audio Tour Demonstration</font></b><br />Tour Curation LLC\n2013\nContact: info@tourcuration.com";
+		
+	txtInfo[1]="<b><font color='blue'>Self-Portrait</font></b><br />Vincent van Gogh\n1889\noil on canvas\nCollection of Mr. and Mrs. John Hay\nThe National Gallery of Art.";
+	
+	txtInfo[2]="<b><font color='blue'>Self-Portrait</font></b><br />Rembrandt van Rijin\n1659\noil on canvas\nAndrew W. Mellon Collection\nThe National Gallery of Art.";
+	
+	txtInfo[3]="<b><font color='blue'>Watson and the Shark</font></b><br />John Singleton Copley\n1778\noil on canvas\nFerdinand Lammot Belin Fund\nThe National Gallery of Art";
+	
+	txtInfo[4]="<b><font color='blue'>Symphony in White, No. 1: The White Girl</font></b><br />James McNeill Whistler\n1862\noil on canvas\nHarris Whittemore Collection\nThe National Gallery of Art.";
+	
+	txtInfo[5]="<b><font color='blue'>The Japanese Footbridge</font></b><br />Claude Monet\n1899\noil on canvas\nGift of Victoria Nebeker Coberly\nThe National Gallery of Art.";
+	
+
+	$(document).ready(function() {
+        $("#pagemap, #pagelist").bind("pagebeforeshow", clearSound); //顯示導覽圖及列表頁面前清除聲音
+		$("#voice").click(playSound);
+		$("#vPlay").click(pauseSound);
+		$("#vStop").click(stopSound);
+		$("#end").bind("click", runEnd); //結束
+		$("a", $("#lstScene")).bind("click", function(e) { //選取列表項目
+			var n=$(this).attr("num");  //取得選取項目編號
+			showscene();
+			MM_setTextOfLayer('div-info','',txtInfo[n]);
+			MM_setTextOfTextfield('txtVoice','',soundfile[n]);
+			MM_showHideLayers('voiceBtn','','hide');
+			slideshow1();
+		});
+	});
+	
+	function playSound() { //按播放聲音鈕
+		var url="/android_asset/www/sound/" + $("#txtVoice").val() + ".amr"; //聲音檔名
+		mymedia=new Media(url, onSuccess, onErr); //建立播放物件
+		if(mymedia)
+			mymedia.play(); //開始播放
+		flagPlay=true; //設定播放旗標
+		if (mediaTimer == null) {  // 每秒更新一次播放時間
+			mediaTimer = setInterval(function() {  
+				mymedia.getCurrentPosition(  // 取得播放位置     
+					function(position) {  
+						if (position < 0) {  //播完
+							position=0;
+							$("#vPlay").attr("src", "img/play.png"); //設定為播放圖示
+							flagPlay=false; //設定暫停旗標
+							mediaTimer = null; //停止顯示計時
+						}
+						setAudioPosition("播放時間：" + Math.floor(position) + " 秒");  
+					},  onErr
+				);  
+			}, 1000);  
+		}  
+	}
+	
+	function pauseSound() { //播放及暫停鈕
+		if(flagPlay) { //原來為播放狀態
+			$("#vPlay").attr("src", "img/play.png"); //設定為播放圖示
+			if(mymedia)
+				mymedia.pause(); //暫停
+			flagPlay=false; //設定暫停旗標
+		} 
+		else { //原來為暫停狀態
+			$("#vPlay").attr("src", "img/pause.png"); //設定為暫停圖示
+			if(mymedia)
+				mymedia.play(); //播放
+			flagPlay=true; //設定播放旗標
+		} 
+	}
+	
+	function stopSound() { //停止播放鈕
+		mymedia.stop(); //停止播放
+		flagPlay=false; //設定暫停旗標
+		setAudioPosition("播放時間：0 秒")
+		mediaTimer = null; //停止顯示計時
+		$("#vPlay").attr("src","img/play.png"); //設定為播放圖示
+	}
+
+	function clearSound() { //清除語音
+		if(mymedia!=null) {
+			flagPlay=false; //設定暫停旗標
+			mediaTimer = null; //停止顯示計時
+			$("#vPlay").attr("src","img/play.png"); //設定為播放圖示
+			mymedia.release(); //stop
+		}
+	}
+	
+	function setAudioPosition(position) {  //display
+		$("#sndPosition").html(position);  
+	}  
+	
+	function showscene() { //change
+		$.mobile.changePage("#scene", "fade", false, true);
+	}
+
+	function slideshow1() { //播放相片
+		var s=$("#txtVoice").val();
+		flvFTSS1('slideshow',1000,2500,1,1,'img/'+s+'.jpg');
+	}
+
+	function onSuccess() {  }
+	
+	function onErr(err) {  }
+function MM_setTextOfLayer(objId,x,newText) { //v9.0
+  with (document) if (getElementById && ((obj=getElementById(objId))!=null))
+    with (obj) innerHTML = unescape(newText);
+}
+function MM_setTextOfTextfield(objId,x,newText) { //v9.0
+  with (document){ if (getElementById){
+    var obj = getElementById(objId);} if (obj) obj.value = newText;
+  }
+}
+function MM_showHideLayers() { //v9.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) 
+  with (document) if (getElementById && ((obj=getElementById(args[i]))!=null)) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function flvFTSS4(){//v1.04
+this.style.filter="";}
+
+function flvFTSS3(){//v1.04
+var v1=arguments,v2=v1[0],v3=MM_findObj(v2);if (v3&&v3.TSS1!=null){clearTimeout(v3.TSS1);}}
+
+function flvFTSS2(){//v1.04
+var v1=arguments,v2=v1[0],v3=MM_findObj(v2),v4=v1[1],v5=v1[2],v6,v7,v8,v9,v10,v11,v12=document;if (v3&&v3.TSS6){flvFTSS3(v2);v9="flvFTSS2('"+v2+"',"+v4+","+v5+")";if (v4==1){if (!v3.TSS4.complete){v3.TSS1=setTimeout(v9,50);return;}v6=v3.TSS8+1;if (v6>v3.TSS6.length-1){if (v3.TSS9==0){return;}else {v6=0;}}else if (v6<v3.TSS6.length-1){v3.TSS4=new Image();v3.TSS4.src=v3.TSS6[v6+1][0];}}else {if (!v3.TSS2.complete){v3.TSS1=setTimeout(v9,50);return;}v6=v3.TSS8-1;if (v6<0){if (v3.TSS9==0){return;}else {v6=v3.TSS6.length-1;}}else if (v6>0){v3.TSS2=new Image();v3.TSS2.src=v3.TSS6[v6-1][0];}}v10=v3.TSS6[v6][0];v11=v3.TSS6[v6][1];v7=(v3.filters&&!v12.TSS5&&v11<25);if (v7){if (v3.filters[0]&&v3.filters[0].status==2){v3.filters[0].Stop();}if (v11==0){v8="blendTrans(Duration="+v3.TSS7+")";}else {v8="revealTrans(Duration="+v3.TSS7+",Transition="+(v11-1)+")";}v3.style.filter=v8;v3.onfilterchange=flvFTSS4;v3.filters[0].Apply();}v3.src=v10;if (v7){v3.filters[0].Play();}v3.TSS8=v6;if (v5==1){v3.TSS1=setTimeout(v9,v3.TSS3);}}}
+
+function flvFTSS1(){//v1.04
+// Copyright 2003, Marja Ribbers-de Vroed, FlevOOware (www.flevooware.nl/dreamweaver/)
+var v1=arguments,v2=document,v3=v1[0],v4=MM_findObj(v3),v5,v6;if (v4){v2.TSS5=(navigator.userAgent.toLowerCase().indexOf("mac")!=-1);v4.TSS7=v1[1]/1000;v4.TSS3=v1[2]+v1[1];v6=v1[3];v4.TSS9=v1[4];v4.TSS6=new Array();for (var v7=5;v7<v1.length;v7+=2){v4.TSS6[v4.TSS6.length]=new Array(v1[v7],v1[v7+1]);}v4.TSS8=0;v4.TSS4=new Image();v4.TSS4.src=v1[7];v4.TSS2=new Image();v4.TSS2.src=v1[v1.length-2];if (v6==1){v5="flvFTSS2('"+v3+"',1,"+v6+")";v4.TSS1=setTimeout(v5,v4.TSS3);}}}
+</script>
+</head>
+
+<body>
+<div id="home" data-role="page" data-theme="c">
+  <div data-position="fixed" data-role="header" data-theme="c">
+    <h1>Tour Curation</h1>
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#pagemap" id="pmap" data-icon="gear">Map</a></li>
+        <li><a href="#pagelist" id="plist" data-icon="grid">List</a></li>
+        <li><a href="#pagelist" id="plist" data-icon="search">Search</a></li>
+        <li><a href="#help" id="phelp" data-icon="info">Information</a></li>
+        
+      </ul>
+    </div>
+  </div>
+  <div data-role="content">
+    <p class="divcenter"><img src="img\tc0.jpg" width="213" height="180"></p>
+    <p> Description</p>
+  </div>
+</div>
+
+
+<!--Map mode-->
+<div id="pagemap" data-add-back-btn="true" data-role="page" data-theme="c">
+  <div data-position="fixed" data-role="header" data-theme="c">
+    <h1>Museum Map</h1>
+  </div>
+  <div data-role="content">
+    <div style="text-align:center"></div>
+    <map name="Map">
+    <!--list 1-->
+    <area shape="rect" coords="143,205,207,293" onClick="showscene();MM_setTextOfLayer('div-info','',txtInfo[1]);MM_setTextOfTextfield('txtVoice','',soundfile[1]);MM_showHideLayers('voiceBtn','','hide');slideshow1();" />
+    
+    <!--list2-->
+    <area shape="rect" coords="228,202,292,290" onClick="showscene();MM_setTextOfLayer('div-info','',txtInfo[2]);MM_setTextOfTextfield('txtVoice','',soundfile[2]);MM_showHideLayers('voiceBtn','','hide');slideshow1();" />
+     
+    <!--list3-->
+    <area shape="rect" coords="33,224,119,302" onClick="showscene();MM_setTextOfLayer('div-info','',txtInfo[3]);MM_setTextOfTextfield('txtVoice','',soundfile[3]);MM_showHideLayers('voiceBtn','','hide');slideshow1();" />
+    
+     <!--list4-->
+     <area shape="rect" coords="347,108,404,228" onClick="showscene();MM_setTextOfLayer('div-info','',txtInfo[4]);MM_setTextOfTextfield('txtVoice','',soundfile[4]);MM_showHideLayers('voiceBtn','','hide');slideshow1();" />
+     
+     <!--list5--> 
+    <area shape="rect" coords="271,338,362,426" onClick="showscene();MM_setTextOfLayer('div-info','',txtInfo[5]);MM_setTextOfTextfield('txtVoice','',soundfile[5]);MM_showHideLayers('voiceBtn','','hide');slideshow1();" />
+      
+      </map>
+      <map name="Map">
+      </map>
+      <center>
+    <span style="text-align:center"><img src="img/map.png" width="480" height="480" usemap="#Map" id="imgmap"></span>
+       </center>
+  </div>
+</div>
+
+<!--Page list 
+<li>Name</li>-->
+
+<div id="pagelist" data-add-back-btn="true" data-role="page" data-theme="c">
+  <div data-position="fixed" data-role="header" data-theme="c" >
+    <h1>Search</h1>
+  </div>
+  <div data-role="content">
+      <ul data-role="listview" id="lstScene">
+      	<li><a href="#scene" num="1">Self-Portrait</a></li>
+      	<li><a href="#scene" num="2">Self-Portrait</a></li>
+      	<li><a href="#scene" num="3">Watson and the Shark</a></li>
+      	<li><a href="#scene" num="4">Symphony in White, No. 1: The White Girl</a></li>
+      	<li><a href="#scene" num="5">The Japanese Footbridge</a></li>
+      </ul>
+  </div>
+</div>
+
+
+
+<!---->
+<div id="scene" data-add-back-btn="true" data-role="page" data-theme="c">
+  <div data-position="fixed" data-role="header" data-theme="c">
+    <h1>Playing list</h1>
+  </div>
+  <div data-role="content">
+    <div class="divcenter" id="div-photo"><img name="slideshow" width="323" height="316" id="slideshow" style="border:1px;"></div>
+    <div id="div-info"></div>
+    <div id="div-voice"><a id="voice" onClick="MM_showHideLayers('voiceBtn','','show')" data-inline="true" data-role="button">mp3</a>
+    
+      <div id="voiceBtn"><img src="img\UIBarButtonRewind.png" name="vStop" width="47" height="29" id="vStop"><img src="img\UIBarButtonPlay.png" name="vPlay" width="31" height="31" id="vPlay"><span id="sndPosition" style="color:#0000dd"></span>
+      <img src="img\UIBarButtonFastForward.png" alt="back" name="vStop2" width="47" height="29" id="vStop2"></div>
+      <input name="txtVoice" type="text" id="txtVoice">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!--page Information-->
+<div id="help" data-add-back-btn="true" data-role="page" data-theme="c">
+  <div data-position="fixed" data-role="header" data-theme="c">
+    <h1>Information</h1>
+  </div>
+  <div data-role="content">
+<!--Content-->
+    <div class="div-content-info">
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+        </ul>
+    </div>
+  </div>
+</div>
+
+<!--Finish-->
+</body>
+</html>

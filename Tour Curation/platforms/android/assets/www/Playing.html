@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Playing</title>
+        <link rel="stylesheet" href="css/animation.css">
+        <link rel="stylesheet" href="css/fontello.css">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" type="css/playerbar.css">
+    </head>
+<body>
+    <div id="header">
+	    <h1>Playing <span id="playNum"></span></h1>
+	    <a id="navBack" class="nav bootstrap-link font24px" href="index.html"><span class="icon-left-open"></span> Search</a>
+	    <hr>
+	    <div id="container">
+	        <h1 id="playTitle">Self-Portrait</h1>
+	        <img id="menuImage" src="img/tc1.jpg" alt="Memu Image"><br>
+	      	<p id="playContent">
+	      		Vincent van Gogh<br>
+	      		1889<br>
+	      		oil on canvas<br>
+	      		Collection of Mr. and Mrs. John Hay<br>
+	      		The National Gallery of Art
+	      	</p>
+            <p id="audio_position"></p>
+            <div class="playbar">
+                <a href="#" class="btn large" id="rewindBtn">
+                    <img src="img/UIBarButtonRewind.png" alt="back 15 sec">
+                </a>
+                <a href="#" class="btn large" id="playBtn">
+                    <img id="playImg" src="img/UIBarButtonPlay.png" alt="play">
+                </a>
+                <a href="#" class="btn large" id="fastBtn">
+                    <img src="img/UIBarButtonFastForward.png" alt="fast 15 sec">
+                </a>
+            </div>
+	    </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/play.js"></script>
+    <script src="audiojs/audio.min.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+</html>

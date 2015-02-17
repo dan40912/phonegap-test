@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <preference name="loglevel" value="DEBUG" />
+    <name>Tour Curation</name>
+    <description>
+        Provide visitors Wonderful travel memories.
+    </description>
+    <author email="tourcuration.com" href="tourcuration.com">
+        Richard Zhang      richard@tourcuration.com     +001-6502811749     skype ID: silvertonbook
+        heish jay          dan40912@gmail.com           +886987032398       skypeid :dan40912 
+
+    </author>
+    <content src="index.html" />
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="default" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="7" />
+    <preference name="android-installLocation" value="auto" />
+    <gap:plugin name="org.apache.cordova.battery-status" />
+    <gap:plugin name="org.apache.cordova.camera" />
+    <gap:plugin name="org.apache.cordova.media-capture" />
+    <gap:plugin name="org.apache.cordova.console" />
+    <gap:plugin name="org.apache.cordova.contacts" />
+    <gap:plugin name="org.apache.cordova.device" />
+    <gap:plugin name="org.apache.cordova.device-motion" />
+    <gap:plugin name="org.apache.cordova.device-orientation" />
+    <gap:plugin name="org.apache.cordova.dialogs" />
+    <gap:plugin name="org.apache.cordova.file" />
+    <gap:plugin name="org.apache.cordova.file-transfer" />
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.globalization" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" />
+    <gap:plugin name="org.apache.cordova.media" />
+    <gap:plugin name="org.apache.cordova.network-information" />
+    <gap:plugin name="org.apache.cordova.splashscreen" />
+    <gap:plugin name="org.apache.cordova.vibration" />
+    <icon src="icon.png" />
+    <icon gap:platform="android" gap:qualifier="ldpi" src="www\img\tc0.jpg" />
+    <icon gap:platform="android" gap:qualifier="mdpi" src="www\img\tc0.jpg" />
+    <icon gap:platform="android" gap:qualifier="hdpi" src="www\img\tc0.jpg" />
+    <icon gap:platform="android" gap:qualifier="xhdpi" src="www\img\tc0.jpg" />
+    <icon gap:platform="blackberry" src="www\img\tc0.jpg" />
+    <icon gap:platform="blackberry" gap:state="hover" src="www\img\tc0.jpg" />
+    <icon gap:platform="ios" height="57" src="www\img\tc0.jpg" width="57" />
+    <icon gap:platform="ios" height="72" src="www\img\tc0.jpg" width="72" />
+    <icon gap:platform="ios" height="114" src="www\img\tc0.jpg" width="114" />
+    <icon gap:platform="ios" height="144" src="www\img\tc0.jpg" width="144" />
+    <icon gap:platform="webos" src="www\img\tc0.jpg" />
+    <icon gap:platform="winphone" src="www\img\tc0.jpg" />
+    <icon gap:platform="winphone" gap:role="background" src="www\img\tc0.jpg" />
+    <gap:splash gap:platform="android" gap:qualifier="port-ldpi" src="www\img\tc0.jpg" />
+    <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="www\img\tc0.jpg" />
+    <gap:splash gap:platform="android" gap:qualifier="port-hdpi" src="www\img\tc0.jpg" />
+    <gap:splash gap:platform="android" gap:qualifier="port-xhdpi" src="www\img\tc0.jpg" />
+    <gap:splash gap:platform="blackberry" src="www\img\tc0.jpg" />
+    <gap:splash gap:platform="ios" height="480" src="www\img\tc0.jpg" width="320" />
+    <gap:splash gap:platform="ios" height="960" src="www\img\tc0.jpg" width="640" />
+    <gap:splash gap:platform="ios" height="1136" src="www\img\tc0.jpg" width="640" />
+    <gap:splash gap:platform="ios" height="1024" src="www\img\tc0.jpg" width="768" />
+    <gap:splash gap:platform="ios" height="768" src="www\img\tc0.jpg" width="1024" />
+    <gap:splash gap:platform="winphone" src="www\img\tc0.jpg" />
+    <access origin="*" />
+</widget>
